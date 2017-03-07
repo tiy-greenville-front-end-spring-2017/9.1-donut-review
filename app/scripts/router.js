@@ -2,24 +2,78 @@ var Backbone = require('backbone');
 var ReactDOM = require('react-dom');
 var React = require('react');
 
+var parse = require('./parse');
 var models = require('./models/recipe');
-var RecipeAdjuster = require('./components/recipe.jsx').RecipeAdjuster;
+var User = require('./models/user').User;
+
+// Controllers
+var AuthContainer = require('./components/auth.jsx').AuthContainer;
+var RecipeListContainer = require('./components/recipeList.jsx').RecipeListContainer;
+var RecipeAddEditContainer = require('./components/recipeAddEdit.jsx').RecipeAddEditContainer;
+var RecipeDetailContainer = require('./components/recipeDetail.jsx').RecipeDetailContainer;
 
 var AppRouter = Backbone.Router.extend({
   routes: {
     '': 'index',
-    'login/': 'login',
-    'signup/': 'signup'
+    'auth/': 'auth',
+    'recipes/': 'recipeList', // C
+    'recipes/:id/edit/': 'recipeAddEdit', // D
+    'recipes/add/': 'recipeAddEdit', // D
+    'recipes/:id/': 'recipeDetail', // E
+  },
+  // execute: function(callback, args, name) {
+  //   // if (!loggedIn) {
+  //   //   goToLogin();
+  //   //   return false;
+  //   // }
+  //   // args.push(parseQueryString(args.pop()));
+  //   // if (callback) callback.apply(this, args);
+  // },
+  initialize: function(){
+    var user = User.current();
+
+    if(user){
+      parse.initialize({sessionId: user.get('sessionToken')});
+    }else{
+      parse.initialize();
+    }
   },
   index: function(){
-    var recipe = new models.Recipe({'name': 'Pasta', 'servings': 4});
-    recipe.get('ingredients').add([
-      {'name': 'flour', 'qty': 2, 'units': 'cups'},
-      {'name': 'water', 'qty': 5, 'units': 'tbsp'},
-    ]);
+    //alert('marketing to convince you how cool this is!');
+    console.log('index');
 
+    // var recipe = new models.Recipe({'name': 'Pasta', 'servings': 4});
+    // recipe.get('ingredients').add([
+    //   {'name': 'flour', 'qty': 2, 'units': 'cups'},
+    //   {'name': 'water', 'qty': 5, 'units': 'tbsp'},
+    // ]);
+    //
+    // ReactDOM.render(
+    //   React.createElement(RecipeAdjuster, {recipe: recipe}),
+    //   document.getElementById('app')
+    // )
+  },
+  auth: function(){
     ReactDOM.render(
-      React.createElement(RecipeAdjuster, {recipe: recipe}),
+      React.createElement(AuthContainer),
+      document.getElementById('app')
+    )
+  },
+  recipeList: function(){
+    ReactDOM.render(
+      React.createElement(RecipeListContainer),
+      document.getElementById('app')
+    )
+  },
+  recipeAddEdit: function(){
+    ReactDOM.render(
+      React.createElement(RecipeAddEditContainer),
+      document.getElementById('app')
+    )
+  },
+  recipeDetail: function(id){
+    ReactDOM.render(
+      React.createElement(RecipeDetailContainer, {id: id}),
       document.getElementById('app')
     )
   }

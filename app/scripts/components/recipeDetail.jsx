@@ -1,6 +1,35 @@
 var React = require('react');
 
-class RecipeAdjuster extends React.Component {
+var BaseLayout = require('../layouts/base.jsx').BaseLayout;
+var Recipe = require('../models/recipe').Recipe;
+
+class RecipeDetailContainer extends React.Component{
+  constructor(props){
+    super(props);
+
+    var recipe = new Recipe();
+    recipe.set('objectId', props.id);
+    recipe.fetch().then(() => {
+      this.setState({recipe: recipe});
+    });
+
+    this.state = {
+      recipe: recipe
+    };
+  }
+  render(){
+    var recipe = this.state.recipe;
+
+    return (
+      <BaseLayout>
+        <h1>{recipe.get('name')}</h1>
+        <AdjustRecipe recipe={this.state.recipe} />
+      </BaseLayout>
+    )
+  }
+}
+
+class AdjustRecipe extends React.Component {
   constructor(props){
     super(props);
 
@@ -26,6 +55,7 @@ class RecipeAdjuster extends React.Component {
         </li>
       )
     });
+    console.log(this.props.recipe);
 
     return (
       <div className="well">
@@ -53,6 +83,9 @@ class AdjustForm extends React.Component {
       servings: this.props.recipe.get('servings')
     };
   }
+  componentWillReceiveProps(nextProps){
+    this.setState({servings: nextProps.recipe.get('servings')});
+  }
   handleServingChange(e){
     this.setState({servings: e.target.value});
   }
@@ -72,5 +105,6 @@ class AdjustForm extends React.Component {
 
 
 module.exports = {
-  RecipeAdjuster
+  RecipeDetailContainer,
+  AdjustRecipe
 };
