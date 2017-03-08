@@ -86,9 +86,12 @@ class RecipeList extends React.Component{
   render(){
     var recipeList = this.props.collection.map((recipe) => {
       return (
-        <li key={recipe.cid} className="list-group-item">
+        <li key={recipe.cid} className="list-group-item clearfix">
           <a href={"#recipes/" + recipe.get('objectId')+ "/"}>
             {recipe.get('name')}
+          </a>
+          <a href={"#recipes/" + recipe.get('objectId')+ "/edit/"} className="btn btn-warning pull-right">
+            Edit
           </a>
         </li>
       );

@@ -3,6 +3,7 @@ var React = require('react');
 var BaseLayout = require('../layouts/base.jsx').BaseLayout;
 var Recipe = require('../models/recipe').Recipe;
 
+
 class RecipeDetailContainer extends React.Component{
   constructor(props){
     super(props);
@@ -23,11 +24,13 @@ class RecipeDetailContainer extends React.Component{
     return (
       <BaseLayout>
         <h1>{recipe.get('name')}</h1>
+        <img src={recipe.get('image')} />
         <AdjustRecipe recipe={this.state.recipe} />
       </BaseLayout>
     )
   }
 }
+
 
 class AdjustRecipe extends React.Component {
   constructor(props){

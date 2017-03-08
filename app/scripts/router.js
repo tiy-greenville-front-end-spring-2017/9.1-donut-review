@@ -7,6 +7,7 @@ var models = require('./models/recipe');
 var User = require('./models/user').User;
 
 // Controllers
+var MarketingContainer = require('./components/marketing.jsx').MarketingContainer;
 var AuthContainer = require('./components/auth.jsx').AuthContainer;
 var RecipeListContainer = require('./components/recipeList.jsx').RecipeListContainer;
 var RecipeAddEditContainer = require('./components/recipeAddEdit.jsx').RecipeAddEditContainer;
@@ -21,14 +22,6 @@ var AppRouter = Backbone.Router.extend({
     'recipes/add/': 'recipeAddEdit', // D
     'recipes/:id/': 'recipeDetail', // E
   },
-  // execute: function(callback, args, name) {
-  //   // if (!loggedIn) {
-  //   //   goToLogin();
-  //   //   return false;
-  //   // }
-  //   // args.push(parseQueryString(args.pop()));
-  //   // if (callback) callback.apply(this, args);
-  // },
   initialize: function(){
     var user = User.current();
 
@@ -39,8 +32,10 @@ var AppRouter = Backbone.Router.extend({
     }
   },
   index: function(){
-    //alert('marketing to convince you how cool this is!');
-    console.log('index');
+    ReactDOM.render(
+      React.createElement(MarketingContainer),
+      document.getElementById('app')
+    )
 
     // var recipe = new models.Recipe({'name': 'Pasta', 'servings': 4});
     // recipe.get('ingredients').add([
@@ -65,9 +60,9 @@ var AppRouter = Backbone.Router.extend({
       document.getElementById('app')
     )
   },
-  recipeAddEdit: function(){
+  recipeAddEdit: function(id){
     ReactDOM.render(
-      React.createElement(RecipeAddEditContainer),
+      React.createElement(RecipeAddEditContainer, {id: id}),
       document.getElementById('app')
     )
   },
