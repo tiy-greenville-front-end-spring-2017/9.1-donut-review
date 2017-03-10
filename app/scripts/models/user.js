@@ -1,7 +1,9 @@
 var $ = require('jquery');
 var Backbone = require('backbone');
 
-var User = Backbone.Model.extend({
+var parse = require('../parse');
+
+var User = parse.ParseModel.extend({
   idAttribute: 'objectId',
   urlRoot: 'https://tiny-parse-server.herokuapp.com/users'
   // function(){
@@ -10,11 +12,16 @@ var User = Backbone.Model.extend({
 }, {
   login: function(cridentials, callback){
     var url = 'https://tiny-parse-server.herokuapp.com/login?' + $.param(cridentials);
+
+    parse.parse.initialize();
+
     $.get(url).then(data => {
       var newUser = new User(data);
       User.store(newUser);
       callback(newUser);
     });
+
+    parse.parse.deinitialize();
   },
   signup: function(creds, callback){
     var newUser = new User(creds);

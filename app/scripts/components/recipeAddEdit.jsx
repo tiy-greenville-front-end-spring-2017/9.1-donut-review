@@ -8,8 +8,6 @@ var ParseFile = require('../models/file').ParseFile;
 
 var name = 'Cool Guy';
 
-.Cool-Guy-health
-
 
 class RecipeAddEditContainer extends React.Component{
   constructor(props){

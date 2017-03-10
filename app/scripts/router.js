@@ -2,9 +2,9 @@ var Backbone = require('backbone');
 var ReactDOM = require('react-dom');
 var React = require('react');
 
-var parse = require('./parse');
 var models = require('./models/recipe');
 var User = require('./models/user').User;
+var TestCollection = require('./models/test').TestCollection;
 
 // Controllers
 var MarketingContainer = require('./components/marketing.jsx').MarketingContainer;
@@ -23,13 +23,13 @@ var AppRouter = Backbone.Router.extend({
     'recipes/:id/': 'recipeDetail', // E
   },
   initialize: function(){
-    var user = User.current();
-
-    if(user){
-      parse.initialize({sessionId: user.get('sessionToken')});
-    }else{
-      parse.initialize();
-    }
+    // var user = User.current();
+    //
+    // if(user){
+    //   parse.initialize({sessionId: user.get('sessionToken')});
+    // }else{
+    //   parse.initialize();
+    // }
   },
   index: function(){
     ReactDOM.render(
@@ -55,6 +55,8 @@ var AppRouter = Backbone.Router.extend({
     )
   },
   recipeList: function(){
+    (new TestCollection()).fetch();
+
     ReactDOM.render(
       React.createElement(RecipeListContainer),
       document.getElementById('app')

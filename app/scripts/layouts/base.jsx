@@ -4,10 +4,10 @@ var User = require('../models/user').User;
 
 class BaseLayout extends React.Component{
   render(){
-    var pageClass = stipTrailingSlash(Backbone.history.fragment).replace('/', '-');
+    var pageClass = stripTrailingSlash(Backbone.history.fragment).replace('/', '-');
 
     return (
-      <div className={pageClass + ' container'}>
+      <div className={pageClass}>
         <nav className="navbar navbar-default">
           <div className="container-fluid">
             <div className="navbar-header">
@@ -32,7 +32,9 @@ class BaseLayout extends React.Component{
           </div>
         </nav>
 
-        {this.props.children}
+        <div className="container">
+          {this.props.children}
+        </div>
 
         <footer>
           Copyright &copy; 2017
@@ -51,7 +53,7 @@ function activeClass(url){
 }
 
 // http://stackoverflow.com/questions/6680825/return-string-without-trailing-slash
-function stipTrailingSlash(str){
+function stripTrailingSlash(str){
    if(str.charAt(str.length-1) == "/"){ str = str.substr(0, str.length - 1);}
    return str || 'home';
 }
